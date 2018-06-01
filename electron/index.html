@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <pre>
+        wei:<input id="wei" value="12342" type="number">
+        <button onclick="signTx()"> send </button>
+
+        <hr>
+
+        wei:<input id="wei" value="12342" type="number">
+        <button onclick="newChannel()"> new channel </button>
+
+
+        <div id="displayTx"> </div>
+    <pre>
+</body>
+</html>
+
+<script type="text/javascript">
+    const fs            = require('fs')
+    const {send}        = require('./js/send.js')
+    const {sign}        = require('./js/sign.js')
+    const {getTx}       = require('./js/getTx.js')
+    const {openChannel} = require('./js/openChannel.js')
+
+    async function newChannel() {
+        const contractAddress = await openChannel(1000)
+        console.log(contractAddress)
+    }
+
+    async function signTx() {
+        // get amount to send
+        const wei = document.getElementById('wei').value
+        // get latest tx
+        const tx = getTx()
+        // sign tx
+        const signedTx = sign(wei, tx)
+        // display tx
+        document.getElementById('displayTx').innerHTML = JSON.stringify(signedTx)
+        // send
+        await send(signedTx)
+         // update json file
+        sentTx.push(signedTx)
+        fs.writeFileSync(`${__dirname}/tx/${channel}`, JSON.stringify(sentTx, null, 4)) 
+    }
+    
+</script>
