@@ -1,0 +1,47 @@
+<html>
+  <style>
+    body {
+      background-color: cornsilk;
+    }
+  </style>
+
+  <body>
+    <pre>
+        Channel Info:
+        To Address:<input id="channelToAddr" value="0xea2954E6A58ED5795C1941908853FfAa6Ad86729"></input>
+        <button onclick="getChannelInfo()">Get Info</button>
+        <div id="channelInfo"></div>
+
+        <hr>
+
+        Fund Channel:
+        Amount:<input id="onChainAmount" value="0.0123">
+        <div id="fundWallet"></div>
+
+        <hr>
+
+        Sign Offchain Transaction:
+        To Address:<input id="toAddr" value="0xea2954E6A58ED5795C1941908853FfAa6Ad86729">
+        Amount:<input id="offChainAmount" value="0.0123">
+        <button onclick="signTransaction()">Sign</button>
+        <div id="signTransaction"></div>
+
+        <hr>
+
+        Claim Onchain Transaction:
+        <button onclick="claimTransaction()">Claim</button>
+        <div id="claimTransaction"></div>
+    </pre>
+  </body>
+
+  <!-- https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js -->
+  <script src="js/lib/web3.minjs"></script>
+  <!-- https://cdn.ethers.io/scripts/ethers-v3.min.js -->
+  <script src="js/lib/ethers-v3.min.js"></script>
+  <!-- https://cdn.jsdelivr.net/npm/ethereumjs-util@6.0.0/dist/index.min.js -->
+  <script src="js/lib/ethereumjs-util.min.js"></script>
+  <!-- signs offhcain messages -->
+  <script src="js/signTransaction.js"></script>
+  <!-- get channel info -->
+  <script src="js/getChannelInfo.js"></script>
+</html>

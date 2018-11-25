@@ -1,41 +1,66 @@
-`npm start`
-
 ```
 pragma solidity ^0.4.0;
 
-contract Channel {
-
-    address public address1 = ${address};
-    address public address2 = 0x14791697260E4c9A71f18484C9f997B308e59325;
-    uint public startDate = ${Math.floor(Date.now()/1000)};
-    uint public channelTimeout = ${_channelTimeout};
+contract OnChainWallet {
+ 
+    struct Channel {
+        bool exist;
+        uint onchainAmount;
+        uint refundBlockHeight;
+    }
+ 
+    // channels[fromAddress][toAddress].exist == true
+    mapping (address  => mapping (address => Channel)) public channels;
     
-    constructor() payable {}
-
-    function CloseChannel(bytes32 _h, uint8 _v, bytes32 _r, bytes32 _s, uint _wei, string _key, bytes32 _hashedKey) public {
-        address signer;
-        bytes32 proof;
-
-        if (keccak256(_key) != _hashedKey) revert();
+    // Refund delay. Default: 4 hours
+    uint public refundDelay = 4 * 60 * 4;
+    
+    
+    event ChannelFundingRecieved(uint);
+    event ChannelClaimed(uint, bool);
+    
+    function claim(
+        bytes32 _h, 
+        uint8 _v, 
+        bytes32 _r, 
+        bytes32 _s, 
+        uint amount, 
+        address toAddress
+    ) public returns (bytes32){
+        address fromAddress = ecrecover(_h, _v, _r, _s);
         
-        signer = ecrecover(_h, _v, _r, _s);
+        Channel storage channel = channels[fromAddress][toAddress];
 
-        if (signer != address2) revert();
+        require(channel.exist == true, "Channel does not exist.");
+        require(channel.onchainAmount >= amount, "Amount exceeds balance.");
+        require(channel.refundBlockHeight >= block.number , "Too late to claim.");
+        require (_h == keccak256(toAddress, amount), 'Invalid Signature.');
 
-        proof = keccak256(this, _wei, _hashedKey);
+        // send to address
+        toAddress.transfer(amount);
+        // return leftovers
+        fromAddress.transfer(channel.onchainAmount - amount);
 
-        if (proof != _h) revert();
+        // reset channel
+        delete channels[fromAddress][toAddress];
+        emit ChannelClaimed(amount, channel.exist);
 
-        address2.transfer(_wei);
+    }
+    
+    // fund a channel
+    function fund(address toAddress)  public payable {
+        Channel storage channel = channels[msg.sender][toAddress];
+
+        if (!channel.exist) {
+            channel.exist = true;
+            channel.onchainAmount = 0;
+            channel.refundBlockHeight = block.number + refundDelay;
+        }
         
-        selfdestruct(address1);
+        channel.onchainAmount += msg.value;
+        
+        emit ChannelFundingRecieved(msg.value);
     }
-
-    function ChannelTimeout() public {
-        if (startDate + channelTimeout > now) revert();
-
-        selfdestruct(address1);
-    }
-
+    
 }
 ```
