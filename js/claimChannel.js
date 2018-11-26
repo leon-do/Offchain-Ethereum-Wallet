@@ -9,7 +9,7 @@ function claimChannel() {
 
 console.log({h,v,r,s, amount, toAddress})
 
-  const contractAddress = "0xa1db9ff2ddedb20ae5a5cacd6af04d510b49e2cc";
+  const contractAddress = "0x0e06f2a560fBc2bE6D1F67941f561925DDD8DA2D";
   const abi = [
     {
       constant: false,
@@ -79,13 +79,11 @@ console.log({h,v,r,s, amount, toAddress})
   const contractInstance = web3.eth.contract(abi).at(contractAddress);
 
   // channels[fromAddress][toAddress] == {exist, onchainAmount, refundBlockHeight}
-  contractInstance["claim"](h, r, r, s, amount, toAddress, (err, txHash) => {
-    if (err) {
-      console.log(err);
-    }
+  contractInstance["claim"](h, v, r, s, amount, toAddress, (err, txHash) => {
+    if (err) {console.log(err)}
     // display info
     document.getElementById("claimChannel").innerHTML = JSON.stringify(
-      txHash,
+      {txHash},
       null,
       4
     );
