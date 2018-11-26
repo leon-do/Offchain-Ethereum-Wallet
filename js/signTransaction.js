@@ -6,7 +6,7 @@ async function signTransaction() {
 
   // convert amount from eth to wei
   const amount = ethers.utils.parseEther(eth);
-console.log(amount)
+
   // https://docs.ethers.io/ethers.js/html/api-utils.html
   const h = ethers.utils.solidityKeccak256(
     ['address', 'uint'],

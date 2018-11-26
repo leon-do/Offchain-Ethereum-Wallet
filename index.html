@@ -15,22 +15,31 @@
         <hr>
 
         Fund Channel:
-        Amount:<input id="onChainAmount" value="0.0123">
-        <div id="fundWallet"></div>
+        To Address:<input id="onChainToAddr" value="0xea2954E6A58ED5795C1941908853FfAa6Ad86729">
+        ETH Amount:<input id="onChainAmount" value="0.0123">
+        <button onclick="fundChannel()">Fund</button>
+        <div id="fundChannel"></div>
 
         <hr>
 
-        Sign Offchain Transaction:
+        Sign Off-Chain Transaction:
         To Address:<input id="toAddr" value="0xea2954E6A58ED5795C1941908853FfAa6Ad86729">
-        Amount:<input id="offChainAmount" value="0.0123">
+        ETH Amount:<input id="offChainAmount" value="0.0123">
         <button onclick="signTransaction()">Sign</button>
         <div id="signTransaction"></div>
 
         <hr>
 
-        Claim Onchain Transaction:
-        <button onclick="claimTransaction()">Claim</button>
-        <div id="claimTransaction"></div>
+        Claim On-Chain Transaction:
+        h:<input id="h" value="0x43722712830b93c119947aeb27be21758275a45ff549eb4e5d6bb50ed4b1c900">
+        v:<input id="v" value="28">
+        r:<input id="r" value="0x655c77f47234ac78a6ca2bdb881f58d4818d137684dd0974d82cb922b4488d99">
+        s:<input id="s" value="0x57c3634457461740017d179458486a595dacb033169ae462421235f47a899263">
+        WEI Amount:<input id="claimAmount" value="12300000000000000">
+        To Address:<input id="toAddress" value="0xea2954E6A58ED5795C1941908853FfAa6Ad86729">
+        <button onclick="claimChannel()">Claim</button>
+        <div id="claimChannel"></div>
+        
     </pre>
   </body>
 
@@ -44,4 +53,8 @@
   <script src="js/signTransaction.js"></script>
   <!-- get channel info -->
   <script src="js/getChannelInfo.js"></script>
+  <!-- get fund channel with ETH -->
+  <script src="js/fundChannel.js"></script>
+  <!-- close channel -->
+  <script src="js/claimChannel.js"></script>
 </html>
