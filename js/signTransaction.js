@@ -7,12 +7,14 @@ async function signTransaction() {
   // convert amount from eth to wei
   const amount = ethers.utils.parseEther(eth);
 
+  // get when timelock expires
+  const expires = await getChannelInfo(toAddress).then(info => info.refundBlockHeight)
+
   // https://docs.ethers.io/ethers.js/html/api-utils.html
   const h = ethers.utils.solidityKeccak256(
-    ['address', 'uint'],
-    [toAddress, amount]
+    ['address', 'uint', 'uint'],
+    [toAddress, amount, expires]
   );
-
   web3.eth.sign(fromAddress, h, function (err, sig) {
     if (err) return console.error(err)
     // parse signature
@@ -21,7 +23,7 @@ async function signTransaction() {
     const v = web3.toDecimal('0x' + sig.slice(130, 132))
     // display signed message
     document.getElementById("signTransaction").innerHTML = JSON.stringify(
-      { h, v, r, s, amount: amount.toString(), fromAddress, toAddress},
+      { fromAddress, h, v, r, s, amount: amount.toString(), toAddress, expires},
       null,
       4
     );

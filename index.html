@@ -31,15 +31,18 @@
         <hr>
 
         Claim On-Chain Transaction:
-        h:<input id="h" value="0x43722712830b93c119947aeb27be21758275a45ff549eb4e5d6bb50ed4b1c900">
-        v:<input id="v" value="28">
-        r:<input id="r" value="0x655c77f47234ac78a6ca2bdb881f58d4818d137684dd0974d82cb922b4488d99">
-        s:<input id="s" value="0x57c3634457461740017d179458486a595dacb033169ae462421235f47a899263">
-        WEI Amount:<input id="claimAmount" value="12300000000000000">
-        To Address:<input id="toAddress" value="0xea2954E6A58ED5795C1941908853FfAa6Ad86729">
+        h:<input id="h" placeholder="0x43722712830b93c119947aeb27be21758275a45ff549eb4e5d6bb50ed4b1c900">
+        v:<input id="v" placeholder="28">
+        r:<input id="r" placeholder="0x655c77f47234ac78a6ca2bdb881f58d4818d137684dd0974d82cb922b4488d99">
+        s:<input id="s" placeholder="0x57c3634457461740017d179458486a595dacb033169ae462421235f47a899263">
+        WEI Amount:<input id="claimAmount" placeholder="12300000000000000">
+        To Address:<input id="toAddress" placeholder="0xea2954E6A58ED5795C1941908853FfAa6Ad86729">
+        Expires:<input id="expires" placeholder="3443640">
         <button onclick="claimChannel()">Claim</button>
         <div id="claimChannel"></div>
         
+        <hr>
+
         Refund Channel:
         To Address:<input id="toAddr" value="0xea2954E6A58ED5795C1941908853FfAa6Ad86729">
         <button onclick="refundChannel()">Refund</button>
@@ -53,10 +56,12 @@
   <script src="js/lib/ethers-v3.min.js"></script>
   <!-- https://cdn.jsdelivr.net/npm/ethereumjs-util@6.0.0/dist/index.min.js -->
   <script src="js/lib/ethereumjs-util.min.js"></script>
+  <!-- get contract data -->
+   <script src="js/contract.js"></script>
+  <!-- get channel info -->
+   <script src="js/getChannelInfo.js"></script>
   <!-- signs offhcain messages -->
   <script src="js/signTransaction.js"></script>
-  <!-- get channel info -->
-  <script src="js/getChannelInfo.js"></script>
   <!-- get fund channel with ETH -->
   <script src="js/fundChannel.js"></script>
   <!-- close channel -->

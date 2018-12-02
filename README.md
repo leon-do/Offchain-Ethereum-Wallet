@@ -27,16 +27,18 @@ contract OnChainWallet {
         bytes32 _r, 
         bytes32 _s, 
         uint amount, 
-        address toAddress
+        address toAddress,
+        uint expires
     ) public returns (bytes32){
         address fromAddress = ecrecover(_h, _v, _r, _s);
         
         Channel storage channel = channels[fromAddress][toAddress];
 
-        require(channel.exist == true, "Channel does not exist.");
-        require(channel.onchainAmount >= amount, "Amount exceeds balance.");
-        require(channel.refundBlockHeight >= block.number , "Too late to claim.");
-        require (_h == keccak256(toAddress, amount), 'Invalid Signature.');
+        require(channel.exist == true, "Channel does not exist");
+        require(channel.onchainAmount >= amount, "Amount exceeds balance");
+        require(channel.refundBlockHeight >= block.number , "Too late to claim");
+        require(expires <= channel.refundBlockHeight, "Expired message");
+        require (_h == keccak256(toAddress, amount, expires), 'Invalid Signature');
 
         // send to address
         toAddress.transfer(amount);
