@@ -64,5 +64,18 @@ contract OnChainWallet {
         emit ChannelFundingRecieved(msg.value);
     }
     
+    function refund(address toAddress){
+        Channel storage channel = channels[msg.sender][toAddress];
+        
+        require(channel.refundBlockHeight <= block.number);
+
+         // return leftovers
+        msg.sender.transfer(channel.onchainAmount);
+
+        // reset channel
+        delete channels[msg.sender][toAddress];
+        emit ChannelClaimed(channel.onchainAmount, channel.exist);
+    }
+    
 }
 ```
